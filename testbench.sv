@@ -61,21 +61,7 @@ class transaction extends uvm_sequence_item;
  
 endclass : transaction
  
-///////////////////////////////////////////////////////////////
-/*
-module tb;
-  
-  
-  transaction tr;
-  
-  initial begin
-    tr = transaction::type_id::create("tr");
-    tr.randomize();
-    tr.print();
-  end
-  
-endmodule
-*/
+
 //////////////////////////////////////////////////////////////////
 ///////////////////write seq
 class write_data extends uvm_sequence#(transaction);
