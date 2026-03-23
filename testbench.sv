@@ -37,7 +37,7 @@ class transaction extends uvm_sequence_item;
 	rand logic [31 : 0]   	PWDATA;
 	rand logic [31 : 0]	  	PADDR;
 	
-    // Output Signals of DUT for APB UART's transaction
+    // Output Signals of DUT for ABP UART's transaction
 	logic				    PREADY;
 	logic 				    PSLVERR;
     logic [31: 0]		    PRDATA;
@@ -298,7 +298,7 @@ endclass
 class driver extends uvm_driver #(transaction);
   `uvm_component_utils(driver)
   
-  virtual apb_if vif;
+  virtual abp_if vif;
   transaction tr;
   
   
@@ -310,7 +310,7 @@ class driver extends uvm_driver #(transaction);
     super.build_phase(phase);
      tr = transaction::type_id::create("tr");
       
-      if(!uvm_config_db#(virtual apb_if)::get(this,"","vif",vif))//uvm_test_top.env.agent.drv.aif
+      if(!uvm_config_db#(virtual abp_if)::get(this,"","vif",vif))//uvm_test_top.env.agent.drv.aif
       `uvm_error("drv","Unable to access Interface");
   endfunction
   
@@ -397,7 +397,7 @@ class mon extends uvm_monitor;
  
 uvm_analysis_port#(transaction) send;
 transaction tr;
-virtual apb_if vif;
+virtual abp_if vif;
  
     function new(input string inst = "mon", uvm_component parent = null);
     super.new(inst,parent);
@@ -407,7 +407,7 @@ virtual apb_if vif;
     super.build_phase(phase);
     tr = transaction::type_id::create("tr");
     send = new("send", this);
-      if(!uvm_config_db#(virtual apb_if)::get(this,"","vif",vif))//uvm_test_top.env.agent.drv.aif
+      if(!uvm_config_db#(virtual abp_if)::get(this,"","vif",vif))//uvm_test_top.env.agent.drv.aif
         `uvm_error("MON","Unable to access Interface");
     endfunction
     
@@ -616,9 +616,9 @@ endclass
 module tb;
   
   
-  apb_if vif();
+  abp_if vif();
   
-  apb_ram dut (.preset(vif.preset), .pclk(vif.pclk), .psel(vif.psel), .penable(vif.penable), .pwrite(vif.pwrite), .paddr(vif.paddr), .pwdata(vif.pwdata), .prdata(vif.prdata), .pready(vif.pready), .pslverr(vif.pslverr));
+  abp_ram dut (.preset(vif.preset), .pclk(vif.pclk), .psel(vif.psel), .penable(vif.penable), .pwrite(vif.pwrite), .paddr(vif.paddr), .pwdata(vif.pwdata), .prdata(vif.prdata), .pready(vif.pready), .pslverr(vif.pslverr));
   
   initial begin
     vif.pclk <= 0;
@@ -629,7 +629,7 @@ module tb;
   
   
   initial begin
-    uvm_config_db#(virtual apb_if)::set(null, "*", "vif", vif);
+    uvm_config_db#(virtual abp_if)::set(null, "*", "vif", vif);
     run_test("test");
    end
   
